@@ -34,6 +34,12 @@
         <li class="nav-heading">Setting</li>
 
         <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/userList">
+                <i class="bi bi-sliders2"></i>
+                <span>User List</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link collapsed" href="/admin/setting">
                 <i class="bi bi-sliders2"></i>
                 <span>Setting Map View</span>
