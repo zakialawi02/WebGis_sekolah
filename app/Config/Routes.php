@@ -21,6 +21,7 @@ $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
+$routes->setAutoRoute(true);
 // The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
 // where controller filters or CSRF protection are bypassed.
 // If you don't want to define all routes, please use the Auto Routing (Improved).
@@ -36,6 +37,14 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+$routes->get('/My-Profile', 'User::myProfile');
+$routes->get('/admin/data/geojson', 'Admin::geojson');
+$routes->get('/admin/data/geojson/tambah', 'Admin::tambahGeojson');
+$routes->get('/admin/data/geojson/edit/(:num)', 'Admin::editGeojson/$1');
+$routes->get('/admin/data/sekolah', 'Admin::sekolah');
+$routes->get('/admin/data/sekolah/tambah', 'Admin::tambahSekolah');
+
+$routes->delete('/admin/delete_Geojson/(:num)', 'Admin::delete_Geojson/$1');
 
 /*
  * --------------------------------------------------------------------
