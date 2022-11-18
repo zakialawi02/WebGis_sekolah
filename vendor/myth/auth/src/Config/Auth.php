@@ -16,7 +16,7 @@ class Auth extends BaseConfig
      *
      * @var string
      */
-    public $defaultUserGroup;
+    public $defaultUserGroup = 'User';
 
     /**
      * --------------------------------------------------------------------
@@ -31,7 +31,7 @@ class Auth extends BaseConfig
      *
      * @var string
      */
-    public $landingRoute = '/';
+    public $landingRoute = '/my-Profile';
 
     /**
      * --------------------------------------------------------------------
@@ -74,8 +74,10 @@ class Auth extends BaseConfig
      * @var array
      */
     public $views = [
-        'login'           => 'Myth\Auth\Views\login',
-        'register'        => 'Myth\Auth\Views\register',
+        'login'           => 'App\Views\Auth\login',
+        'register'        => 'App\Views\Auth\register',
+        // 'login'           => 'Myth\Auth\Views\login',
+        // 'register'        => 'Myth\Auth\Views\register',
         'forgot'          => 'Myth\Auth\Views\forgot',
         'reset'           => 'Myth\Auth\Views\reset',
         'emailForgot'     => 'Myth\Auth\Views\emails\forgot',
