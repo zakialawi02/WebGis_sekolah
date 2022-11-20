@@ -37,8 +37,8 @@
                                 <input type="text" class="form-control" id="alamat_sekolah" aria-describedby="textlHelp" name="alamat_sekolah">
                             </div>
                             <div class="col-md-6">
-                                <label for="coordinate	" class="form-label">Koordinat</label>
-                                <input type="text" class="form-control" id="coordinate	" aria-describedby="textlHelp" name="coordinate	">
+                                <label for="coordinate" class="form-label">Koordinat</label>
+                                <input type="text" class="form-control" id="coordinate" aria-describedby="textlHelp" name="coordinate">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Provinsi</label>
@@ -79,8 +79,13 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="akreditasi" class="form-label">Akreditasi</label>
-                                <input type="text" class="form-control" id="akreditasi" aria-describedby="textlHelp" name="akreditasi">
+                                <label class="form-label">Akreditasi</label>
+                                <select class="form-control select2" id="id_akreditasi" name="id_akreditasi">
+                                    <option value="">--Pilih Akreditasi--</option>
+                                    <?php foreach ($akreditasi as $key => $value) : ?>
+                                        <option value="<?= $value['id_akreditasi'] ?>"><?= $value['akreditasi'] ?></option>
+                                    <?php endforeach ?>
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <label for="status" class="form-label">Status</label>

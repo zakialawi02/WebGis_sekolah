@@ -32,8 +32,7 @@ class User extends BaseController
         $data = [
             'title' => 'User List',
         ];
-        // $users = new \Myth\Auth\Models\UserModel();
-        // $data['users'] = $users->findAll();
+
         $db      = \Config\Database::connect();
         $builder = $db->table('users');
         $builder->select('users.id as userid, username, email, name');

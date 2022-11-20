@@ -68,6 +68,7 @@
                         </tbody>
                     </table>
 
+                    <?= print_r($tampilSekolah); ?>
 
                 </div>
             </div>

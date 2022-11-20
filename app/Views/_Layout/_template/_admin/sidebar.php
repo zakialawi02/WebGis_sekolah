@@ -29,29 +29,30 @@
                 <i class="bi bi-building"></i>
                 <span>Sekolah</span>
             </a>
+
+            <a class="nav-link collapsed" href="/admin/pending">
+                <i class="bi bi-hourglass"></i>
+                <span>Pending</span>
+            </a>
         </li><!-- End F.A.Q Page Nav -->
 
         <li class="nav-heading">Setting</li>
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/userList">
-                <i class="bi bi-sliders2"></i>
-                <span>User List</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/setting">
-                <i class="bi bi-sliders2"></i>
-                <span>Setting Map View</span>
-            </a>
-        </li><!-- End F.A.Q Page Nav -->
+        <a class="nav-link collapsed" href="/admin/userList">
+            <i class="bi bi-person-lines-fill"></i>
+            <span>User List</span>
+        </a>
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-contact.html">
-                <i class="bi bi-envelope"></i>
-                <span>Contact</span>
-            </a>
-        </li><!-- End Contact Page Nav -->
+        <a class="nav-link collapsed" href="/admin/setting">
+            <i class="bi bi-sliders2"></i>
+            <span>Setting Map View</span>
+        </a>
+
+        <a class="nav-link collapsed" href="pages-contact.html">
+            <i class="bi bi-envelope"></i>
+            <span>Contact</span>
+        </a>
+        <!-- End Contact Page Nav -->
 
     </ul>
 

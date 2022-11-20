@@ -32,8 +32,7 @@ class Admin extends BaseController
         $data = [
             'title' => 'USER LIST',
         ];
-        // $users = new \Myth\Auth\Models\UserModel();
-        // $data['users'] = $users->findAll();
+
         $db      = \Config\Database::connect();
         $builder = $db->table('users');
         $builder->select('users.id as userid, username, email, name');
@@ -44,6 +43,17 @@ class Admin extends BaseController
         $data['users'] = $query->getResult();
 
         return view('page/userList', $data);
+    }
+
+    public function pending()
+    {
+        $data = [
+            'title' => 'PENDING LIST',
+            'tampilSekolah' => $this->sekolah->callSekolahPend()->getResult(),
+        ];
+
+
+        return view('admin/pendingList', $data);
     }
 
 
@@ -229,6 +239,7 @@ class Admin extends BaseController
 
     public function tambahSekolah()
     {
+
         $data = [
             'title' => 'DATA SEKOLAH',
             'tampilData' => $this->setting->tampilData()->getResult(),
@@ -237,6 +248,7 @@ class Admin extends BaseController
             'tampilSekolah' => $this->sekolah->callSekolah()->getResult(),
             'provinsi' => $this->sekolah->allProvinsi(),
             'jenjang' => $this->sekolah->allJenjang(),
+            'akreditasi' => $this->sekolah->allAkreditasi(),
         ];
 
         return view('admin/tambahSekolah', $data);
@@ -245,7 +257,7 @@ class Admin extends BaseController
     // insert data
     public function tambah_Sekolah()
     {
-        // dd($this->request->getVar());
+        dd($this->request->getVar());
 
         // ambil file
         $fileFotoSekolah = $this->request->getFile('foto_sekolah');
@@ -253,7 +265,6 @@ class Admin extends BaseController
         $randomName = $fileFotoSekolah->getRandomName();
         // pindah file to hosting
         $fileFotoSekolah->move(ROOTPATH . 'public/img/sekolah/', $randomName);
-
 
         $data = [
             'nama_sekolah' => $this->request->getVar('nama_sekolah'),
@@ -264,9 +275,10 @@ class Admin extends BaseController
             'id_kecamatan'  => $this->request->getVar('id_kecamatan'),
             'id_kelurahan'  => $this->request->getVar('id_kelurahan'),
             'id_jenjang'  => $this->request->getVar('id_jenjang'),
-            'akreditasi'  => $this->request->getVar('akreditasi'),
+            'id_akreditasi'  => $this->request->getVar('id_akreditasi'),
             'status'  => $this->request->getVar('status'),
             'foto_sekolah'  => $randomName,
+            'created_at' => date('Y-m-d H:i:s'),
         ];
 
         $addSekolah = $this->sekolah->addSekolah($data);
@@ -288,6 +300,9 @@ class Admin extends BaseController
         session()->setFlashdata('alert', "Data Berhasil dihapus.");
         return $this->response->redirect(site_url('/admin/data/sekolah'));
     }
+
+
+
 
     //  SCRAP KAB/KOT, KECAMATAN, KELURAHAN
     public function kabupaten()

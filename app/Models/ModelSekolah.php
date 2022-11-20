@@ -11,7 +11,7 @@ class ModelSekolah extends Model
     protected $primaryKey = 'id_sekolah';
 
 
-    protected $allowFields = ['id_jenjang', 'nama_sekolah', 'alamat_sekolah', 'akreditasi', 'status', 'coordinate', 'foto', 'id_provinsi', 'id_kabkot', 'id_kecamatan'];
+    protected $allowFields = ['id_jenjang', 'stat_appv', 'nama_sekolah', 'alamat_sekolah', 'id_akreditasi', 'status', 'coordinate', 'foto_sekolah', 'id_provinsi', 'id_kabkot', 'id_kecamatan'];
 
     function __construct()
     {
@@ -21,7 +21,42 @@ class ModelSekolah extends Model
     function callSekolah($id_sekolah = false)
     {
         if ($id_sekolah === false) {
-            return $this->db->table('tbl_sekolah')->get();
+            // return $this->db->table('tbl_sekolah')
+            //     ->join('tbl_jenjang', 'tbl_jenjang.id_jenjang = tbl_sekolah.id_jenjang')
+            //     ->join('tbl_akreditasi', 'tbl_akreditasi.id_akreditasi = tbl_sekolah.id_akreditasi')
+            //     ->join('tbl_provinsi', 'tbl_provinsi.id_provinsi = tbl_sekolah.id_provinsi')
+            //     ->join('tbl_kabupaten', 'tbl_kabupaten.id_kabupaten = tbl_sekolah.id_kabupaten')
+            //     ->join('tbl_kecamatan', 'tbl_kecamatan.id_kecamatan = tbl_sekolah.id_kecamatan')
+            //     ->join('tbl_kelurahan', 'tbl_kelurahan.id_kelurahan = tbl_sekolah.id_kelurahan')
+            //     ->get(); //select all data
+
+            return $this->db->table('tbl_sekolah')
+                ->join('tbl_jenjang', 'tbl_jenjang.id_jenjang = tbl_sekolah.id_jenjang')
+                ->join('tbl_akreditasi', 'tbl_akreditasi.id_akreditasi = tbl_sekolah.id_akreditasi')
+                ->join('tbl_provinsi', 'tbl_provinsi.id_provinsi = tbl_sekolah.id_provinsi')
+                ->join('tbl_kabupaten', 'tbl_kabupaten.id_kabupaten = tbl_sekolah.id_kabupaten')
+                ->join('tbl_kecamatan', 'tbl_kecamatan.id_kecamatan = tbl_sekolah.id_kecamatan')
+                ->join('tbl_kelurahan', 'tbl_kelurahan.id_kelurahan = tbl_sekolah.id_kelurahan')
+                ->getWhere(['stat_appv' => '1']); //select data of stat_appv=>1
+
+            // return $this->db->table('tbl_sekolah')->get();
+        } else {
+            return $this->Where(['id_sekolah' => $id_sekolah])->get();
+        }
+    }
+    function callSekolahPend($id_sekolah = false)
+    {
+        if ($id_sekolah === false) {
+            return $this->db->table('tbl_sekolah')
+                ->join('tbl_jenjang', 'tbl_jenjang.id_jenjang = tbl_sekolah.id_jenjang')
+                ->join('tbl_akreditasi', 'tbl_akreditasi.id_akreditasi = tbl_sekolah.id_akreditasi')
+                ->join('tbl_provinsi', 'tbl_provinsi.id_provinsi = tbl_sekolah.id_provinsi')
+                ->join('tbl_kabupaten', 'tbl_kabupaten.id_kabupaten = tbl_sekolah.id_kabupaten')
+                ->join('tbl_kecamatan', 'tbl_kecamatan.id_kecamatan = tbl_sekolah.id_kecamatan')
+                ->join('tbl_kelurahan', 'tbl_kelurahan.id_kelurahan = tbl_sekolah.id_kelurahan')
+                ->getWhere(['stat_appv' => '0']); //select data of stat_appv=>0
+
+            // return $this->db->table('tbl_sekolah')->get();
         } else {
             return $this->Where(['id_sekolah' => $id_sekolah])->get();
         }
@@ -43,6 +78,11 @@ class ModelSekolah extends Model
     public function allJenjang()
     {
         return $this->db->table('tbl_jenjang')->orderBy('id_jenjang', 'ASC')->get()->getResultArray();
+    }
+    // Akreditasi
+    public function allAkreditasi()
+    {
+        return $this->db->table('tbl_akreditasi')->orderBy('id_akreditasi', 'ASC')->get()->getResultArray();
     }
 
     // PROVINSI
