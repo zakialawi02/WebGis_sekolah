@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\ModelSetting;
+use Myth\Auth\Password;
 
 class User extends BaseController
 {
@@ -11,11 +12,13 @@ class User extends BaseController
     {
         $this->setting = new ModelSetting();
     }
-    public function myProfile()
+
+    public function manager()
     {
         $data = [
-            'title' => 'My Profile',
+            'title' => 'USER MANAGEMENT',
         ];
+
         $db      = \Config\Database::connect();
         $builder = $db->table('users');
         $builder->select('users.id as userid, username, email, name');
@@ -24,13 +27,14 @@ class User extends BaseController
         $query = $builder->get();
 
         $data['users'] = $query->getResult();
-        return view('page/myProfile', $data);
+
+        return view('admin/userManagement', $data);
     }
 
     public function list()
     {
         $data = [
-            'title' => 'User List',
+            'title' => 'USER LIST',
         ];
 
         $db      = \Config\Database::connect();
@@ -42,21 +46,53 @@ class User extends BaseController
 
         $data['users'] = $query->getResult();
 
-
-        return view('user/userList', $data);
+        return view('page/userList', $data);
     }
 
-    public function UpdateMyData()
+    public function tambah()
     {
+        // validation
+        $validate = $this->validate([
+            'username' => [
+                'rules' => 'required|min_length[4]',
+                'errors' => [
+                    'required' => 'wajib di isi',
+                    'min_length' => 'Min. 4 karakter'
+                ],
+            ],
+            'email' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'wajib di isi',
+                ],
+            ],
+            'password_hash' => [
+                'rules' => 'required|min_length[4]',
+                'errors' => [
+                    'required' => 'wajib di isi',
+                    'min_length' => 'Min. 4 karakter'
+                ],
+            ],
+        ]);
+        if (!$validate) {
+            return redirect()->to('/user/manager')->withInput();
+        }
+
         // dd($this->request->getVar());
-        $id = $this->request->getPost('id');
         $data = [
+            'username' => $this->request->getVar('username'),
             'full_name' => $this->request->getVar('full_name'),
-            'user_about' => $this->request->getPost('user_about'),
+            'email' => $this->request->getVar('email'),
+            'password_hash' => Password::hash($this->request->getVar('password_hash')),
+            // 'role' => $this->request->getVar('role'),
+            'createed_at' => date('Y-m-d H:i:s'),
         ];
 
-        $this->setting->updateMyData($data, $id);
-        // session()->setFlashdata('alert', 'Data Berhasil disimpan.');
-        return $this->response->redirect(site_url('/My-Profile'));
+        $addUser = $this->setting->addUser($data);
+
+        if ($addUser) {
+            session()->setFlashdata('alert', 'Data Anda Berhasil Ditambahkan.');
+            return $this->response->redirect(site_url('/user/manager'));
+        }
     }
 }

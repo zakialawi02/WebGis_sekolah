@@ -68,15 +68,24 @@
 
                     <div class="card-body">
                         <h3 class="card-title">Example Card</h3>
+                        <?php if (session()->getFlashdata('alert')) : ?>
+                            <div class="card-body">
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    <?= session()->getFlashdata('alert'); ?>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        <?php endif; ?>
 
                         <table class="table table-striped" id="table1" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>[From] Username</th>
                                     <th>Sekolah</th>
                                     <th>Alamat</th>
                                     <th>Status</th>
-                                    <th>Appv Stats</th>
+                                    <th>Reject/Accept</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,10 +93,26 @@
                                 <?php foreach ($tampilSekolah as $S) : ?>
                                     <tr>
                                         <th scope="row"><?= $i++; ?></th>
+                                        <td><?= $S->user; ?></td>
                                         <td><?= $S->nama_sekolah; ?></td>
                                         <td><?= $S->alamat_sekolah; ?></td>
                                         <td><?= $S->status; ?></td>
-                                        <td><?= $S->stat_appv; ?></td>
+                                        <td>
+                                            <div class="btn-group mr-2" role="group" aria-label="First group">
+                                                <form action="/admin/rejectSekolah/<?= $S->id_sekolah; ?>" method="post">
+                                                    <?= csrf_field(); ?>
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <button type="submit" class="btn btn-danger bi bi-x-octagon" onclick="return confirm('Yakin Hapus Data?')"> Reject</button>
+                                                </form>
+                                            </div>
+                                            <div class="btn-group mr-2" role="group" aria-label="First group">
+                                                <form action="/admin/approveSekolah/<?= $S->id_sekolah; ?>" method="post">
+                                                    <?= csrf_field(); ?>
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <button type="submit" class="btn btn-success bi bi-check-circle" onclick="return confirm('Yakin Hapus Data?')"> Accept</button>
+                                                </form>
+                                            </div>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>

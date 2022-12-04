@@ -38,7 +38,12 @@
 
         <li class="nav-heading">Setting</li>
 
-        <a class="nav-link collapsed" href="/admin/userList">
+        <a class="nav-link collapsed" href="/user/manager">
+            <i class="bi bi-person-lines-fill"></i>
+            <span>User Management</span>
+        </a>
+
+        <a class="nav-link collapsed" href="/user/list">
             <i class="bi bi-person-lines-fill"></i>
             <span>User List</span>
         </a>

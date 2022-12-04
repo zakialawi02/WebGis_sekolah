@@ -36,7 +36,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="/My-Profile">
+                        <a class="dropdown-item d-flex align-items-center" href="/MyProfile">
                             <i class="bi bi-person"></i>
                             <span>My Profile</span>
                         </a>

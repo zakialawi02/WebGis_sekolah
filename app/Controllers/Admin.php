@@ -27,23 +27,6 @@ class Admin extends BaseController
         return view('admin/tempp', $data);
     }
 
-    public function userList()
-    {
-        $data = [
-            'title' => 'USER LIST',
-        ];
-
-        $db      = \Config\Database::connect();
-        $builder = $db->table('users');
-        $builder->select('users.id as userid, username, email, name');
-        $builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
-        $builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
-        $query = $builder->get();
-
-        $data['users'] = $query->getResult();
-
-        return view('page/userList', $data);
-    }
 
     public function pending()
     {
@@ -244,7 +227,6 @@ class Admin extends BaseController
             'title' => 'DATA SEKOLAH',
             'tampilData' => $this->setting->tampilData()->getResult(),
             'tampilGeojson' => $this->FGeojson->callGeojson()->getResult(),
-            'updateGeojson' => $this->FGeojson->callGeojson()->getRow(),
             'tampilSekolah' => $this->sekolah->callSekolah()->getResult(),
             'provinsi' => $this->sekolah->allProvinsi(),
             'jenjang' => $this->sekolah->allJenjang(),
@@ -254,10 +236,25 @@ class Admin extends BaseController
         return view('admin/tambahSekolah', $data);
     }
 
+    public function editSekolah($id_sekolah)
+    {
+        $data = [
+            'title' => 'DATA SEKOLAH',
+            'tampilData' => $this->setting->tampilData()->getResult(), //ambil settingan mapView
+            'tampilGeojson' => $this->FGeojson->callGeojson()->getResult(), //ambil data geojson
+            'tampilSekolah' => $this->sekolah->callSekolah($id_sekolah)->getRow(),
+            'provinsi' => $this->sekolah->allProvinsi(),
+            'jenjang' => $this->sekolah->allJenjang(),
+            'akreditasi' => $this->sekolah->allAkreditasi(),
+        ];
+
+        return view('admin/updateSekolah', $data);
+    }
+
     // insert data
     public function tambah_Sekolah()
     {
-        dd($this->request->getVar());
+        // dd($this->request->getVar());
 
         // ambil file
         $fileFotoSekolah = $this->request->getFile('foto_sekolah');
@@ -266,7 +263,10 @@ class Admin extends BaseController
         // pindah file to hosting
         $fileFotoSekolah->move(ROOTPATH . 'public/img/sekolah/', $randomName);
 
+        $user = user()->username;
         $data = [
+            'user' => $user,
+            'stat_appv' => $this->request->getVar('stat_appv'),
             'nama_sekolah' => $this->request->getVar('nama_sekolah'),
             'alamat_sekolah'  => $this->request->getVar('alamat_sekolah'),
             'coordinate'  => $this->request->getVar('coordinate'),
@@ -287,6 +287,71 @@ class Admin extends BaseController
             session()->setFlashdata('alert', 'Data Anda Berhasil Ditambahkan.');
             return $this->response->redirect(site_url('/admin/data/sekolah'));
         }
+    }
+
+    // update data
+    public function update_Sekolah()
+    {
+        // dd($this->request->getVar());
+
+        // ambil file
+        $fileFotoSekolah = $this->request->getFile('foto_sekolah');
+        //generate random file name
+        $randomName = $fileFotoSekolah->getRandomName();
+        // pindah file to hosting
+        $fileFotoSekolah->move(ROOTPATH . 'public/img/sekolah/', $randomName);
+
+        $user = user()->username;
+        $data = [
+            'user' => $user,
+            'stat_appv' => $this->request->getVar('stat_appv'),
+            'nama_sekolah' => $this->request->getVar('nama_sekolah'),
+            'alamat_sekolah'  => $this->request->getVar('alamat_sekolah'),
+            'coordinate'  => $this->request->getVar('coordinate'),
+            'id_provinsi'  => $this->request->getVar('id_provinsi'),
+            'id_kabupaten'  => $this->request->getVar('id_kabupaten'),
+            'id_kecamatan'  => $this->request->getVar('id_kecamatan'),
+            'id_kelurahan'  => $this->request->getVar('id_kelurahan'),
+            'id_jenjang'  => $this->request->getVar('id_jenjang'),
+            'id_akreditasi'  => $this->request->getVar('id_akreditasi'),
+            'status'  => $this->request->getVar('status'),
+            'foto_sekolah'  => $randomName,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $addSekolah = $this->sekolah->addSekolah($data);
+
+        if ($addSekolah) {
+            session()->setFlashdata('alert', 'Data Anda Berhasil Ditambahkan.');
+            return $this->response->redirect(site_url('/admin/data/sekolah'));
+        }
+    }
+
+
+    // approve data
+    public function approveSekolah($id_sekolah)
+    {
+        // dd($this->request->getVar());
+
+        $data = [
+            'stat_appv' => '1',
+        ];
+
+        $this->sekolah->chck_appv($data, $id_sekolah);
+        session()->setFlashdata('alert', 'Data Approved.');
+        return $this->response->redirect(site_url('/admin/pending'));
+    }
+
+    public function rejectSekolah($id_sekolah)
+    {
+
+        $data = $this->sekolah->callSekolah($id_sekolah)->getRow();
+        $file = $data->foto_sekolah;
+        unlink("img/sekolah/" . $file);
+
+        $this->sekolah->delete(['id_sekolah' => $id_sekolah]);
+        session()->setFlashdata('alert', "Data Berhasil dihapus.");
+        return $this->response->redirect(site_url('/admin/data/sekolah'));
     }
 
     public function delete_Sekolah($id_sekolah)

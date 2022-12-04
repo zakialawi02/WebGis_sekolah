@@ -37,12 +37,14 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->get('/My-Profile', 'User::myProfile');
+
 $routes->get('/admin/data/geojson', 'Admin::geojson');
 $routes->get('/admin/data/geojson/tambah', 'Admin::tambahGeojson');
 $routes->get('/admin/data/geojson/edit/(:num)', 'Admin::editGeojson/$1');
+
 $routes->get('/admin/data/sekolah', 'Admin::sekolah');
 $routes->get('/admin/data/sekolah/tambah', 'Admin::tambahSekolah');
+$routes->get('/admin/data/sekolah/edit/(:num)', 'Admin::editSekolah/$1');
 
 $routes->delete('/admin/delete_Geojson/(:num)', 'Admin::delete_Geojson/$1');
 

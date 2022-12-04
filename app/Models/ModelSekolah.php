@@ -72,6 +72,12 @@ class ModelSekolah extends Model
         return $this->db->table('tbl_sekolah')->update($data, ['id_sekolah' => $id_sekolah]);
     }
 
+    public function chck_appv($data, $id_sekolah)
+    {
+        return $this->db->table('tbl_sekolah')->update($data, ['id_sekolah' => $id_sekolah]);
+    }
+
+
 
 
     // Jenjang

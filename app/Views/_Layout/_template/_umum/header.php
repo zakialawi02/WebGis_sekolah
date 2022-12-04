@@ -50,7 +50,7 @@
 
 
                 <?php if (logged_in()) : ?>
-                    <li><a class="dropdown getstarted scrollto" href="/My-Profile">Client Area</a></li>
+                    <li><a class="dropdown getstarted scrollto" href="/MyProfile">Client Area</a></li>
                     <li><a class="dropdown getstarted scrollto" href="<?= base_url('logout'); ?>">Log Out</a></li>
                 <?php else : ?>
                     <li><a class="getstarted scrollto" href="/Login">Login</a></li>

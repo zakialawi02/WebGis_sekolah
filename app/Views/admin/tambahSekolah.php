@@ -28,6 +28,12 @@
                         <form class="row g-3" action="/admin/tambah_Sekolah" method="post" enctype="multipart/form-data">
                             <?= csrf_field(); ?>
 
+                            <?php if (in_groups('User')) : ?>
+                                <input type="hidden" class="form-control" for="stat_appv" id="stat_appv" name="stat_appv" value="0">
+                            <?php else : ?>
+                                <input type="hidden" class="form-control" for="stat_appv" id="stat_appv" name="stat_appv" value="1">
+                            <?php endif ?>
+
                             <div class="mb-3">
                                 <label for="nama_sekolah" class="form-label">Nama Sekolah</label>
                                 <input type="text" class="form-control" id="nama_sekolah" aria-describedby="textlHelp" name="nama_sekolah">
